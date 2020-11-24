@@ -156,6 +156,7 @@ function DogNameInput() {
     </form>
   )
 }
+
 function App() {
   const forceRerender = useForceRerender()
   return (

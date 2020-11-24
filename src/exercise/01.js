@@ -2,11 +2,14 @@
 // http://localhost:3000/isolated/exercise/01.js
 
 import React from 'react'
-// 💣 remove this import
-import Globe from '../globe'
 
-// 🐨 use React.lazy to create a Globe component which using a dynamic import
-// to get the Globe component from the '../globe' module.
+// Using use action like MouseEnter or Focus to perform manual prefetching
+// const loadGlobe = () => import('../globe')
+// const Globe = React.lazy(loadGlobe)
+
+// Using browser built in prefetching using Links and Webpack magic comments
+// Generates a link like <link rel="prefetch" as="script" href="/static/js/1.chunk.js">
+const Globe = React.lazy(() => import(/* webpackPrefetch: true */ '../globe'))
 
 function App() {
   const [showGlobe, setShowGlobe] = React.useState(false)
@@ -35,7 +38,9 @@ function App() {
         {' show globe'}
       </label>
       <div style={{width: 400, height: 400}}>
-        {showGlobe ? <Globe /> : null}
+        <React.Suspense fallback={<div>loading...</div>}>
+          {showGlobe ? <Globe /> : null}
+        </React.Suspense>
       </div>
     </div>
   )
